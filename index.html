@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Pyforms by jamiesun</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Pyforms</h1>
+        <h2>python web app forms tools</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/jamiesun/pyforms/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/jamiesun/pyforms/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/jamiesun/pyforms" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>pyforms</h1>
+
+<p>python web app forms tools</p>
+
+<p>Code is extracted  from web.py</p>
+
+<h1>install </h1>
+
+<pre><code>easy_install pyforms
+
+pip install pyforms
+</code></pre>
+
+<h1>example of flask </h1>
+
+<pre><code>#!/usr/bin/env python
+#coding:utf-8
+
+from flask import Flask
+from flask import request
+import pyforms as form
+app = Flask(__name__)
+
+
+is_email = form.regexp('[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$',"Invalid email format")
+is_chars = form.regexp("^[A-Za-z]+$","Must be in English string")
+is_alphanum = lambda x:form.regexp("^[A-Za-z0-9]{%s}$"%x,"Alphanumeric combinations must be length %s"%x)
+is_alphanum2 = lambda x,y:form.regexp("^[A-Za-z0-9]{%s,%s}$"%(x,y),"Must be a length of %s to %s alphanumeric combinations"%(x,y))
+is_number = form.regexp("^[0-9]*$","Must be numeric")
+is_cn = form.regexp("^[\u4e00-\u9fa5],{0,}$","Must be Chinese characters")
+is_url = form.regexp('[a-zA-z]+://[^\s]*',"Invalid url")
+is_phone = form.regexp('^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$',"Invalid phone numbers")
+is_idcard = form.regexp('^\d{15}$|^\d{18}$|^\d{17}[Xx]$',"Invalid ID card number")
+is_ip = form.regexp("\d+\.\d+\.\d+\.\d+","Invalid ip")
+is_rmb = form.regexp('^(([1-9]\d*)|0)(\.\d{2})?$',"Invalid amount of RMB")
+len_of = lambda x,y:form.regexp(".{%s,%s}$"%(x,y),"Length must be %s to %s"%(x,y))
+
+form1 = form.Form(
+    form.Textbox("name",is_alphanum2(6,32),description=""),
+    form.Password("passwd",is_alphanum2(6,32),description=""),
+    form.Textarea("desc",len_of(1,128),description="",rows="5",),
+    form.Button("submit", type="submit",html="&lt;b&gt;Submit&lt;/b&gt;"),
+)
+
+def render_form(frm):
+    return "&lt;form action='/' method='POST'&gt;%s&lt;/form&gt;"%frm.render()
+
+@app.route('/', methods=['POST', 'GET'])
+def hello_world():
+    iform = form1()
+    if request.method == 'GET':
+        return render_form(iform)
+    elif request.method == 'POST':
+        if not iform.validates(source=request.form): 
+            return render_form(iform)
+        else:
+            return "ok"  
+
+if __name__ == '__main__':
+    app.run()
+</code></pre>
+      </section>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33313432-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
