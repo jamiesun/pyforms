@@ -5,6 +5,13 @@ python web app forms tools
 
 Code is extracted  from web.py
 
+install 
+=======
+
+    easy_install pyforms
+
+    pip install pyforms
+
 example of flask 
 =================
 
