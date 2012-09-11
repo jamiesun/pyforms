@@ -5,7 +5,7 @@ python web app forms tools
 
 Code is extracted  from web.py
 
-examples of flask 
+example of flask 
 =================
 
     #!/usr/bin/env python
